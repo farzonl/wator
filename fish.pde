@@ -1,11 +1,11 @@
 class fish {
     // # of chrons a fish must live
     // to produce offspring
-    int breed;
+    final int breed;
     int x, y;
     int chronons; // age of fish
     final int UP = 0, RIGHT= 1, DOWN=2, LEFT=3;
-    
+
     fish(int breed, int x, int y) {
         this.breed = breed;
         this.x = x;
@@ -34,19 +34,15 @@ class fish {
         chronons++;
     }
     boolean isOccupied(int x, int y) {
-        return watorWorld.grid[x][y].fOccupied;
+        return watorWorld.grid[x][y].fOccupied || watorWorld.grid[x][y].sOccupied;
     }
 
-    void setOccupied(int x, int y, boolean status) {
-        watorWorld.grid[x][y].fOccupied = status;
-    }
-
-    void setOccupied(boolean status) {
-        watorWorld.grid[x][y].fOccupied = status;
+    void setUnOccupied() {
+        watorWorld.grid[x][y].remove(CELL.eFISH);
     }
 
     void setOccupied() {
-        watorWorld.grid[x][y].fOccupied = true;
+        watorWorld.grid[x][y].addFish(this, CELL.eFISH);
     }
 
     // check if fish survived specified chronons to reproduce. 
@@ -72,7 +68,7 @@ class fish {
                 {
                     int tempY = getColIndex(y-1);
                     if(!isOccupied(x,tempY)) {
-                        this.setOccupied(false);
+                        this.setUnOccupied();
                         y = tempY;
                         this.setOccupied();
                         return true;
@@ -83,7 +79,7 @@ class fish {
                 {
                     int tempX = getRowIndex(x+1);
                     if(!isOccupied(tempX,y)) {
-                        this.setOccupied(false);
+                        this.setUnOccupied();
                         x = tempX;
                         this.setOccupied();
                         return true;
@@ -94,7 +90,7 @@ class fish {
                 {
                     int tempY = getColIndex(y+1);
                     if(!isOccupied(x,tempY)) {
-                        this.setOccupied(false);
+                        this.setUnOccupied();
                         y = tempY;
                         this.setOccupied();
                         return true;
@@ -105,7 +101,7 @@ class fish {
                 {
                     int tempX = getRowIndex(x-1);
                     if(!isOccupied(tempX,y)) {
-                        this.setOccupied(false);
+                        this.setUnOccupied();
                         x = tempX;
                         this.setOccupied();
                         return true;
