@@ -20,6 +20,7 @@
     void dies() {
         if(energy >= starve) {
             //System.out.println("this shark died");
+            setUnOccupied();
             watorWorld.sharks.remove(this);
         }
     }
@@ -27,10 +28,12 @@
     // if moved to cell occupied by fish eat the fish
     // restore energy
     void eats(CELL c) {
+       watorWorld.fish.remove(c.f);
+       c.f.setUnOccupied();
        c.f = this;
-       c.sOccupied = true;
-       c.fOccupied = false;
+       setOccupied();
        energy = 0;
+       System.out.println("shark just ate");
     }
 
     //shark has survived enough chronons to reproduce (same as the fish but pesky arraylist needs to change)
@@ -68,6 +71,23 @@
             cells.add(watorWorld.grid[tempXl][y]);
             //System.out.println("found fish at: (x: "+x+", y: "+y);
         }
+        if(isOccupiedByFish(tempXl,tempYu)) {
+            cells.add(watorWorld.grid[tempXl][tempYu]);
+            //System.out.println("found fish at: (x: "+x+", y: "+y);
+        }
+        if(isOccupiedByFish(tempXl,tempYd)) {
+            cells.add(watorWorld.grid[tempXl][tempYd]);
+            //System.out.println("found fish at: (x: "+x+", y: "+y);
+        }
+
+        if(isOccupiedByFish(tempXr,tempYu)) {
+            cells.add(watorWorld.grid[tempXr][tempYu]);
+            //System.out.println("found fish at: (x: "+x+", y: "+y);
+        }
+        if(isOccupiedByFish(tempXr,tempYd)) {
+            cells.add(watorWorld.grid[tempXr][tempYd]);
+            //System.out.println("found fish at: (x: "+x+", y: "+y);
+        }
         if(cells.size() > 0) {
             CELL cell = cells.get(floor(random(cells.size())));
             this.x = cell.i;
@@ -80,6 +100,7 @@
 
 
      boolean isOccupied(int x, int y) {
+        //System.out.println("called the correct is occupied");
         return watorWorld.grid[x][y].sOccupied;
     }
 

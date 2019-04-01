@@ -60,57 +60,53 @@ class fish {
     // At each chronon, select 1 unoccupied  adjacent cell at random and move there. 
     // If there are none, then don't move
     boolean swim() {
-        int i = floor(random(4));
-        int moveAttempts = 0;
-        while(moveAttempts < 4) {
-            switch(i) {
-                case UP:
-                {
-                    int tempY = getColIndex(y-1);
-                    if(!isOccupied(x,tempY)) {
-                        this.setUnOccupied();
-                        y = tempY;
-                        this.setOccupied();
-                        return true;
-                    } // if occupied fall through.
-                    moveAttempts++;
-                }
-                case RIGHT:
-                {
-                    int tempX = getRowIndex(x+1);
-                    if(!isOccupied(tempX,y)) {
-                        this.setUnOccupied();
-                        x = tempX;
-                        this.setOccupied();
-                        return true;
-                    } // if occupied fall through.
-                    moveAttempts++;
-                }
-                case DOWN:
-                {
-                    int tempY = getColIndex(y+1);
-                    if(!isOccupied(x,tempY)) {
-                        this.setUnOccupied();
-                        y = tempY;
-                        this.setOccupied();
-                        return true;
-                    } // if occupied fall through.
-                    moveAttempts++;
-                }
-                case LEFT:
-                {
-                    int tempX = getRowIndex(x-1);
-                    if(!isOccupied(tempX,y)) {
-                        this.setUnOccupied();
-                        x = tempX;
-                        this.setOccupied();
-                        return true;
-                    }
-                    moveAttempts++;
-                }
-            }
-            // random failed lets just iterate through.
-            i = 0;
+        int tempYu = getColIndex(y-1);
+        int tempYd = getColIndex(y+1);
+        int tempXr = getRowIndex(x+1);
+        int tempXl = getRowIndex(x-1);
+        ArrayList<CELL> cells = new ArrayList<CELL>();
+        if(!isOccupied(x,tempYu)) {
+            cells.add(watorWorld.grid[x][tempYu]);
+            //System.out.println("found fish at: (x: "+x+", y: "+y);
+        }
+        if(!isOccupied(x,tempYd)) {
+            cells.add(watorWorld.grid[x][tempYd]);
+            //System.out.println("found fish at: (x: "+x+", y: "+y);
+        }
+        if(!isOccupied(tempXr,y)) {
+            cells.add(watorWorld.grid[tempXr][y]);
+            //System.out.println("found fish at: (x: "+x+", y: "+y);
+        }
+        if(!isOccupied(tempXl,y)) {
+            cells.add(watorWorld.grid[tempXl][y]);
+            //System.out.println("found fish at: (x: "+x+", y: "+y);
+        }
+        if(!isOccupied(tempXl,tempYu)) {
+            cells.add(watorWorld.grid[tempXl][tempYu]);
+            //System.out.println("found fish at: (x: "+x+", y: "+y);
+        }
+        if(!isOccupied(tempXl,tempYd)) {
+            cells.add(watorWorld.grid[tempXl][tempYd]);
+            //System.out.println("found fish at: (x: "+x+", y: "+y);
+        }
+
+        if(!isOccupied(tempXr,tempYu)) {
+            cells.add(watorWorld.grid[tempXr][tempYu]);
+            //System.out.println("found fish at: (x: "+x+", y: "+y);
+        }
+        if(!isOccupied(tempXr,tempYd)) {
+            cells.add(watorWorld.grid[tempXr][tempYd]);
+            //System.out.println("found fish at: (x: "+x+", y: "+y);
+        }
+        if(cells.size() > 0) {
+            CELL cell = cells.get(floor(random(cells.size())));
+            //System.out.println("previous cell: (x: "+x+", y: "+y);
+            setUnOccupied();
+            this.x = cell.i;
+            this.y = cell.j;
+            setOccupied();
+            //System.out.println("curr  cell: (x: "+x+", y: "+y);
+            return true;
         }
         return false;
     }

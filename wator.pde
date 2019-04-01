@@ -1,6 +1,6 @@
 import java.util.Iterator;
 
-int cellDimm = 60;
+int cellDimm = 13;
 int cellDimmMax;
 int COLS, ROWS;
 int szDimm;
@@ -140,7 +140,7 @@ void setup() {
 
 
 void updateCellDimm() {
-  cellDimmMax = szDimm/10;
+  cellDimmMax = szDimm/2;
   if(cellDimm > cellDimmMax) {
     cellDimm = cellDimmMax;
   }
@@ -148,8 +148,8 @@ void updateCellDimm() {
   COLS = width /cellDimm;
   ROWS = height/cellDimm;
   //watorWorld = new wator();
-  int nfish  =  4;//100;
-  int nsharks = 1;//20;
+  int nfish  =  100;
+  int nsharks = 20;
   watorWorld = new wator(nfish, nsharks);
 }
 
