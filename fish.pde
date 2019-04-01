@@ -4,8 +4,6 @@ class fish {
     final int breed;
     int x, y;
     int chronons; // age of fish
-    final int UP = 0, RIGHT= 1, DOWN=2, LEFT=3;
-
     fish(int breed, int x, int y) {
         this.breed = breed;
         this.x = x;
@@ -81,7 +79,7 @@ class fish {
             cells.add(watorWorld.grid[tempXl][y]);
             //System.out.println("found fish at: (x: "+x+", y: "+y);
         }
-        if(!isOccupied(tempXl,tempYu)) {
+        /*if(!isOccupied(tempXl,tempYu)) {
             cells.add(watorWorld.grid[tempXl][tempYu]);
             //System.out.println("found fish at: (x: "+x+", y: "+y);
         }
@@ -97,7 +95,7 @@ class fish {
         if(!isOccupied(tempXr,tempYd)) {
             cells.add(watorWorld.grid[tempXr][tempYd]);
             //System.out.println("found fish at: (x: "+x+", y: "+y);
-        }
+        }*/
         if(cells.size() > 0) {
             CELL cell = cells.get(floor(random(cells.size())));
             //System.out.println("previous cell: (x: "+x+", y: "+y);

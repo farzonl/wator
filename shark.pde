@@ -5,6 +5,7 @@
      int energy;
      shark(int breed,int starve, int x, int y) {
         super(breed,x,y);
+        System.out.println("breed at chronon: "+breed);
         this.starve = starve;
         int energy = 0;
     }
@@ -14,6 +15,7 @@
         dies();
         super.update();
         energy++;
+         System.out.println("curr chronons: "+chronons);
     }
 
     // if energy reaches starve, the shark dies.
@@ -31,9 +33,8 @@
        watorWorld.fish.remove(c.f);
        c.f.setUnOccupied();
        c.f = this;
-       setOccupied();
        energy = 0;
-       System.out.println("shark just ate");
+       //System.out.println("shark just ate");
     }
 
     //shark has survived enough chronons to reproduce (same as the fish but pesky arraylist needs to change)
@@ -71,7 +72,7 @@
             cells.add(watorWorld.grid[tempXl][y]);
             //System.out.println("found fish at: (x: "+x+", y: "+y);
         }
-        if(isOccupiedByFish(tempXl,tempYu)) {
+        /*if(isOccupiedByFish(tempXl,tempYu)) {
             cells.add(watorWorld.grid[tempXl][tempYu]);
             //System.out.println("found fish at: (x: "+x+", y: "+y);
         }
@@ -87,12 +88,14 @@
         if(isOccupiedByFish(tempXr,tempYd)) {
             cells.add(watorWorld.grid[tempXr][tempYd]);
             //System.out.println("found fish at: (x: "+x+", y: "+y);
-        }
+        }*/
         if(cells.size() > 0) {
             CELL cell = cells.get(floor(random(cells.size())));
+            setUnOccupied();
             this.x = cell.i;
             this.y = cell.j;
             this.eats(cell);
+            setOccupied();
             return true;
         }
         return super.swim();

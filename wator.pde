@@ -1,6 +1,6 @@
 import java.util.Iterator;
 
-int cellDimm = 13;
+int cellDimm = 200;
 int cellDimmMax;
 int COLS, ROWS;
 int szDimm;
@@ -43,6 +43,31 @@ class CELL {
       }
     }
     boolean fOccupied = false , sOccupied = false;
+
+    void print() {
+      if(fOccupied && sOccupied) {
+         System.out.println("error should be shark or fish");
+      } else if(fOccupied) {
+        if(this.f == null) {
+          System.out.println("should be occupied by fish");
+        } else {
+          System.out.println("found fish at: (x: "+i+", y: "+j);
+          System.out.println("occupied by fish with chronons left to breed: "+ (f.breed - f.chronons));
+        }
+      } else if(sOccupied) {
+        if(this.f == null) {
+          System.out.println("should be occupied by shark");
+        } else {
+          System.out.println("found shark at: (x: "+i+", y: "+j);
+          System.out.println("occupied by shark with chronons left to breed: "+(f.breed - f.chronons));
+          shark s = (shark)f;
+          System.out.println("energy remaining: "+(s.starve - s.energy));
+        }
+      }
+      else {
+        System.out.println("found water at: (x: "+i+", y: "+j);
+      }
+    }
 }
 
 class wator {
@@ -108,18 +133,18 @@ class wator {
     }
 
     void draw() {
-      for(int i = 0; i < fish.size(); i++) {
-        fill(fishColor);
-        fish.get(i).draw();
-        if(!bPaused) {
-            fish.get(i).update();
-        }
-      }
       for(int i = 0; i < sharks.size(); i++) {
         fill(sharkColor);
         sharks.get(i).draw();
         if(!bPaused) {
             sharks.get(i).update();
+        }
+      }
+      for(int i = 0; i < fish.size(); i++) {
+        fill(fishColor);
+        fish.get(i).draw();
+        if(!bPaused) {
+            fish.get(i).update();
         }
       }
     }
@@ -137,8 +162,14 @@ void setup() {
   updateCellDimm();
 }
 
-
-
+void mousePressed() {
+  if (mouseX<width && mouseX >0 && mouseY <height && mouseY > 0) 
+  {
+    int msX = mouseX/cellDimm;
+    int msY = mouseY/cellDimm;
+    watorWorld.grid[msX][msY].print();
+  }
+}
 void updateCellDimm() {
   cellDimmMax = szDimm/2;
   if(cellDimm > cellDimmMax) {
@@ -147,9 +178,8 @@ void updateCellDimm() {
 
   COLS = width /cellDimm;
   ROWS = height/cellDimm;
-  //watorWorld = new wator();
-  int nfish  =  100;
-  int nsharks = 20;
+  int nfish  =  2;//100;
+  int nsharks = 1;//20;
   watorWorld = new wator(nfish, nsharks);
 }
 
