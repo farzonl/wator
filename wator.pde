@@ -1,6 +1,6 @@
 import java.util.Iterator;
 
-int cellDimm = 200;
+int cellDimm = 11;
 int cellDimmMax;
 int COLS, ROWS;
 int szDimm;
@@ -132,6 +132,16 @@ class wator {
         }
     }
 
+    //hack
+    void cleanGrid() {
+      for (int i = 0; i < COLS; i++) {
+          for (int j = 0; j < ROWS; j++) {
+            if(grid[i][j].sOccupied) {
+              ((shark)grid[i][j].f).dies();
+            } 
+          }
+      }
+    }
     void draw() {
       for(int i = 0; i < sharks.size(); i++) {
         fill(sharkColor);
@@ -146,6 +156,9 @@ class wator {
         if(!bPaused) {
             fish.get(i).update();
         }
+      }
+      if(!bPaused) {
+        cleanGrid(); // hack TODO remove
       }
     }
 }
@@ -178,7 +191,7 @@ void updateCellDimm() {
 
   COLS = width /cellDimm;
   ROWS = height/cellDimm;
-  int nfish  =  2;//100;
+  int nfish  =  20;//100;
   int nsharks = 1;//20;
   watorWorld = new wator(nfish, nsharks);
 }
