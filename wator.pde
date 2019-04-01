@@ -1,177 +1,21 @@
 import java.util.Iterator;
 
-int cellDimm = 11;
+int cellDimm = 4;
 int cellDimmMax;
 int COLS, ROWS;
 int szDimm;
 Boolean bPaused = true, bSetStepMode = false, bResize = false,
-        bDrawGrid = true, bDrawCircles = false, bShowInstructions = false;
-
-
-class CELL {
-    int i,j;
-    static final int eSHARK= 0, eFISH = 1;
-    fish f;
-    CELL(int i , int j) {
-      this.i = i;
-      this.j = j;
-    }
-
-    void remove(int fishType) {
-      this.f = null;
-      switch(fishType) {
-        case eSHARK:
-        sOccupied = false;
-        break;
-        case eFISH:
-        fOccupied = false;
-        break;
-      }
-    }
-
-    void addFish(fish f, int fishType) {
-      this.f = f;
-      switch(fishType) {
-        case eSHARK:
-        sOccupied = true;
-        //fOccupied = false;
-        break;
-        case eFISH:
-        fOccupied = true;
-        //sOccupied = false;
-        break;
-      }
-    }
-    boolean fOccupied = false , sOccupied = false;
-
-    void print() {
-      if(fOccupied && sOccupied) {
-         System.out.println("error should be shark or fish");
-      } else if(fOccupied) {
-        if(this.f == null) {
-          System.out.println("should be occupied by fish");
-        } else {
-          System.out.println("found fish at: (x: "+i+", y: "+j);
-          System.out.println("occupied by fish with chronons left to breed: "+ (f.breed - f.chronons));
-        }
-      } else if(sOccupied) {
-        if(this.f == null) {
-          System.out.println("should be occupied by shark");
-        } else {
-          System.out.println("found shark at: (x: "+i+", y: "+j);
-          System.out.println("occupied by shark with chronons left to breed: "+(f.breed - f.chronons));
-          shark s = (shark)f;
-          System.out.println("energy remaining: "+(s.starve - s.energy));
-        }
-      }
-      else {
-        System.out.println("found water at: (x: "+i+", y: "+j);
-      }
-    }
-}
-
-class wator {
-    ArrayList<shark> sharks;
-    ArrayList<fish> fish;
-    final int FISH_BREED = 6;
-    final int SHARK_BREED = 8;
-    final int SHARK_STARVE = 12;
-    color sharkColor = color(192,192,192); // silver
-    color fishColor = color(255, 153, 153); // salmon
-    color oceanColor = color(0,41,58); // ocean blue
-    int nfish;
-    int nsharks;
-    CELL[][] grid;
-    //wator() {
-    wator(int nfish, int nsharks) {
-        this.nfish = nfish;
-        this.nsharks = nsharks;
-        grid = new CELL[COLS][ROWS];
-        fish = new ArrayList<fish>();
-        sharks = new ArrayList<shark>();
-        for (int i = 0; i < COLS; i++) {
-          for (int j = 0; j < ROWS; j++) { 
-            grid[i][j] = new CELL(i,j);
-          }
-        }
-        int numAnimals = nfish+nsharks;
-        int numCells = ROWS*COLS;
-        int sharksRemainingToPlace = nsharks;
-        int fishRemainingToPlace = nfish;
-
-        for(int i = 0; i <numAnimals;i++) {
-          int index = (int)map(i, 0, numAnimals, 0, numCells);
-          int ax = index % COLS;
-          int ay = index / COLS;
-          float rand = random(1);
-            if(rand>0.5) {
-              if(fishRemainingToPlace > 0) {
-                fish currFish = new fish(FISH_BREED, ax, ay);
-                grid[ax][ay].addFish(currFish, CELL.eFISH);
-                fish.add(currFish);
-                fishRemainingToPlace--;
-              } else {
-                shark currShark = new shark(SHARK_BREED, SHARK_STARVE, ax, ay);
-                grid[ax][ay].addFish(currShark, CELL.eSHARK);
-                sharks.add(currShark);
-                sharksRemainingToPlace--;
-              }
-            } else {
-              if(sharksRemainingToPlace > 0) {
-                shark currShark = new shark(SHARK_BREED, SHARK_STARVE, ax, ay);
-                grid[ax][ay].addFish(currShark, CELL.eSHARK);
-                sharks.add(currShark);
-                sharksRemainingToPlace--;
-              } else {
-                fish currFish = new fish(FISH_BREED, ax, ay);
-                grid[ax][ay].addFish(currFish, CELL.eFISH);
-                fish.add(currFish);
-                fishRemainingToPlace--;
-              }
-            } 
-        }
-    }
-
-    //hack
-    void cleanGrid() {
-      for (int i = 0; i < COLS; i++) {
-          for (int j = 0; j < ROWS; j++) {
-            if(grid[i][j].sOccupied) {
-              ((shark)grid[i][j].f).dies();
-            } 
-          }
-      }
-    }
-    void draw() {
-      for(int i = 0; i < sharks.size(); i++) {
-        fill(sharkColor);
-        sharks.get(i).draw();
-        if(!bPaused) {
-            sharks.get(i).update();
-        }
-      }
-      for(int i = 0; i < fish.size(); i++) {
-        fill(fishColor);
-        fish.get(i).draw();
-        if(!bPaused) {
-            fish.get(i).update();
-        }
-      }
-      if(!bPaused) {
-        cleanGrid(); // hack TODO remove
-      }
-    }
-}
-wator watorWorld;
+        bDrawGrid = false, bDrawCircles = false, bShowInstructions = false;
+Graph g;
+WatorSim watorWorld;
 
 void settings()
 {
-    size(600, 600);
+    size(800, 800);
 }
 
 void setup() {
-  szDimm = 600;
-  //size(600, 600);
+  szDimm = 800;
   updateCellDimm();
 }
 
@@ -180,7 +24,7 @@ void mousePressed() {
   {
     int msX = mouseX/cellDimm;
     int msY = mouseY/cellDimm;
-    watorWorld.grid[msX][msY].print();
+    watorWorld.grid[msY][msX].print();
   }
 }
 void updateCellDimm() {
@@ -188,12 +32,13 @@ void updateCellDimm() {
   if(cellDimm > cellDimmMax) {
     cellDimm = cellDimmMax;
   }
-
-  COLS = width /cellDimm;
+  int halfWidth = width/2;
+  COLS = (halfWidth) /cellDimm;
   ROWS = height/cellDimm;
-  int nfish  =  20;//100;
-  int nsharks = 1;//20;
-  watorWorld = new wator(nfish, nsharks);
+  int nfish  =  max((COLS*ROWS)/8,1);
+  int nsharks = max(nfish/4,1);
+  g = new Graph(halfWidth,0);
+  watorWorld = new WatorSim(nfish, nsharks);
 }
 
 void drawGrid() {
@@ -202,18 +47,19 @@ void drawGrid() {
   for (int x=0; x<=COLS; x++) {
       line(x*cellDimm,0,x*cellDimm,height);
   }
+  int halfWidth = width/2;
   for (int y=0; y<=ROWS; y++) {
-      line(0,y*cellDimm,width,y*cellDimm);
+      line(0,y*cellDimm,halfWidth,y*cellDimm);
   }
 }
 
 void writeLine(String S, int i) {
     // writes S at line i
-    text(S, 30, 25+i*10);
+    text(S, width/2, 25+i*10);
 }
 
 void drawInstructions() {
-     fill(color(255));
+     fill(color(255,0,0));
      int L=0; // line counter, incremented below for ech line
      if(bShowInstructions) {
         writeLine("(press r) to enter resize " + (!bResize ? "window mode" : "cell dimmensions mode"),L++);
@@ -221,7 +67,7 @@ void drawInstructions() {
         writeLine("(press -) to decrease " + (bResize ? "window size" : "cell dimmensions"),L++);
         writeLine("cell dimmensions: " + cellDimm,L++);
         writeLine("window size: " + szDimm + " by " + szDimm,L++);
-        writeLine("number of fish: "+ watorWorld.fish.size(),L++);
+        writeLine("number of fish: "+  watorWorld.fish.size(),L++);
         writeLine("number of sharks: "+ watorWorld.sharks.size(),L++);
         writeLine("(press g) toggle grid (large cell dimm debug tool)", L++);
         writeLine("(press spacebar) Game is: " + (bPaused ? "paused" : "running") , L++);
@@ -236,6 +82,7 @@ void drawInstructions() {
    }
    background(watorWorld.oceanColor);
    watorWorld.draw();
+   g.draw();
    // end of each draw set pause back to true
    drawInstructions();
 
@@ -275,9 +122,11 @@ void keyPressed() {
        // * =,+ - Increase the grid square size and randomize the grid.
        case '+':
        case '=':
+       {
+       boolean oldPause = bPaused;
        bPaused = true;
        if(bResize) {
-         if(szDimm <= 600) {
+         if(szDimm <= 800) {
            szDimm +=100;
            surface.setSize(szDimm,szDimm);
          }
@@ -287,10 +136,13 @@ void keyPressed() {
         }
        }
        updateCellDimm();
-       bPaused = false;
+       bPaused = oldPause;
+       }
        break;
       // * - (minus sign) - Decrease the grid square size and randomize the grid.
        case '-':
+       {
+       boolean oldPause = bPaused;
        bPaused = true;
        if(bResize) {
           if(szDimm > 100) {
@@ -303,7 +155,8 @@ void keyPressed() {
          }
        }
        updateCellDimm();
-       bPaused = false;
+       bPaused = oldPause;
+       }
        break;
      }
 }

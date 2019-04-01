@@ -58,10 +58,10 @@ class fish {
     // At each chronon, select 1 unoccupied  adjacent cell at random and move there. 
     // If there are none, then don't move
     boolean swim() {
-        int tempYu = getColIndex(y-1);
-        int tempYd = getColIndex(y+1);
-        int tempXr = getRowIndex(x+1);
-        int tempXl = getRowIndex(x-1);
+        int tempYu = getRowIndex(y-1);
+        int tempYd = getRowIndex(y+1);
+        int tempXr = getColIndex(x+1);
+        int tempXl = getColIndex(x-1);
         ArrayList<CELL> cells = new ArrayList<CELL>();
         if(!isOccupied(x,tempYu)) {
             cells.add(watorWorld.grid[x][tempYu]);

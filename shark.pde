@@ -5,7 +5,7 @@
      int energy;
      shark(int breed,int starve, int x, int y) {
         super(breed,x,y);
-        System.out.println("breed at chronon: "+breed);
+        //System.out.println("breed at chronon: "+breed);
         this.starve = starve;
         int energy = 0;
     }
@@ -15,7 +15,7 @@
         dies();
         super.update();
         energy++;
-         System.out.println("curr chronons: "+chronons);
+        // System.out.println("curr chronons: "+chronons);
     }
 
     // if energy reaches starve, the shark dies.
@@ -51,10 +51,10 @@
     // If no fish move to unoccupied cells (fish behavior implliments this call super)
     // don't move if no unoccupied  cells (again fish behavior )
     boolean swim() {
-        int tempYu = getColIndex(y-1);
-        int tempYd = getColIndex(y+1);
-        int tempXr = getRowIndex(x+1);
-        int tempXl = getRowIndex(x-1);
+        int tempYu = getRowIndex(y-1);
+        int tempYd = getRowIndex(y+1);
+        int tempXr = getColIndex(x+1);
+        int tempXl = getColIndex(x-1);
         ArrayList<CELL> cells = new ArrayList<CELL>();
         if(isOccupiedByFish(x,tempYu)) {
             cells.add(watorWorld.grid[x][tempYu]);
