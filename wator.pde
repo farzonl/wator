@@ -5,7 +5,7 @@ int cellDimmMax;
 int COLS, ROWS;
 int szDimm;
 Boolean bPaused = true, bSetStepMode = false, bResize = false,
-        bDrawGrid = false, bDrawCircles = false, bShowInstructions = false;
+        bDebug = false, bDrawGrid = false, bDrawCircles = false, bShowInstructions = false;
 Graph g;
 WatorSim watorWorld;
 
@@ -20,11 +20,13 @@ void setup() {
 }
 
 void mousePressed() {
-  if (mouseX<width && mouseX >0 && mouseY <height && mouseY > 0) 
+  if (mouseX<(width/2) && mouseX >0 && mouseY <height && mouseY > 0) 
   {
     int msX = mouseX/cellDimm;
     int msY = mouseY/cellDimm;
-    watorWorld.grid[msY][msX].print();
+    if(bDebug) {
+      watorWorld.grid[msX][msY].print();
+    }
   }
 }
 void updateCellDimm() {

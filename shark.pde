@@ -58,37 +58,16 @@
         ArrayList<CELL> cells = new ArrayList<CELL>();
         if(isOccupiedByFish(x,tempYu)) {
             cells.add(watorWorld.grid[x][tempYu]);
-            //System.out.println("found fish at: (x: "+x+", y: "+y);
         }
         if(isOccupiedByFish(x,tempYd)) {
             cells.add(watorWorld.grid[x][tempYd]);
-            //System.out.println("found fish at: (x: "+x+", y: "+y);
         }
         if(isOccupiedByFish(tempXr,y)) {
             cells.add(watorWorld.grid[tempXr][y]);
-            //System.out.println("found fish at: (x: "+x+", y: "+y);
         }
         if(isOccupiedByFish(tempXl,y)) {
             cells.add(watorWorld.grid[tempXl][y]);
-            //System.out.println("found fish at: (x: "+x+", y: "+y);
         }
-        /*if(isOccupiedByFish(tempXl,tempYu)) {
-            cells.add(watorWorld.grid[tempXl][tempYu]);
-            //System.out.println("found fish at: (x: "+x+", y: "+y);
-        }
-        if(isOccupiedByFish(tempXl,tempYd)) {
-            cells.add(watorWorld.grid[tempXl][tempYd]);
-            //System.out.println("found fish at: (x: "+x+", y: "+y);
-        }
-
-        if(isOccupiedByFish(tempXr,tempYu)) {
-            cells.add(watorWorld.grid[tempXr][tempYu]);
-            //System.out.println("found fish at: (x: "+x+", y: "+y);
-        }
-        if(isOccupiedByFish(tempXr,tempYd)) {
-            cells.add(watorWorld.grid[tempXr][tempYd]);
-            //System.out.println("found fish at: (x: "+x+", y: "+y);
-        }*/
         if(cells.size() > 0) {
             CELL cell = cells.get(floor(random(cells.size())));
             setUnOccupied();
@@ -103,7 +82,6 @@
 
 
      boolean isOccupied(int x, int y) {
-        //System.out.println("called the correct is occupied");
         return watorWorld.grid[x][y].sOccupied;
     }
 
