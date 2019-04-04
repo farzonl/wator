@@ -21,12 +21,45 @@ class WatorSim {
             grid[i][j] = new CELL(i,j);
           }
         }
-        int numAnimals = nfish+nsharks;
-        int numCells = ROWS*COLS;
-        int sharksRemainingToPlace = nsharks;
-        int fishRemainingToPlace = nfish;
+        if(bUniformDist) {
+          mapSeperate();
+        } else {
+          mapAll();
+        }
+    }
 
-        for(int i = 0; i <numAnimals;i++) {
+    void mapSeperate() {
+      int numCells = ROWS*COLS;
+      for(int i = 0; i <nfish;i++) {
+          int index = (int)map(i, 0, nfish, 0, numCells);
+          int ax = index % COLS;
+          int ay = index / COLS;
+          fish currFish = new fish(FISH_BREED, ax, ay);
+          grid[ax][ay].addFish(currFish, CELL.eFISH);
+          fish.add(currFish);
+      }
+
+      for(int i = 0; i < nsharks;i++) {
+          int index = (int) map(i, 0, nsharks, 0, numCells);
+          int ax = index % COLS;
+          int ay = index / COLS;
+          if(grid[ax][ay].fOccupied) {
+            fish.remove(grid[ax][ay].f);
+            grid[ax][ay].remove(CELL.eFISH);
+          }
+          shark currShark = new shark(SHARK_BREED, SHARK_STARVE, ax, ay);
+          grid[ax][ay].addFish(currShark, CELL.eSHARK);
+          sharks.add(currShark);
+      }
+    }
+
+    void mapAll() {
+      int numAnimals = nfish+nsharks;
+      int numCells = ROWS*COLS;
+      int sharksRemainingToPlace = nsharks;
+      int fishRemainingToPlace = nfish;
+
+      for(int i = 0; i <numAnimals;i++) {
           int index = (int)map(i, 0, numAnimals, 0, numCells);
           int ax = index % COLS;
           int ay = index / COLS;
@@ -55,7 +88,7 @@ class WatorSim {
                 fish.add(currFish);
                 fishRemainingToPlace--;
               }
-            } 
+            }
         }
     }
 

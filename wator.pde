@@ -4,8 +4,9 @@ int cellDimm = 4;
 int cellDimmMax;
 int COLS, ROWS;
 int szDimm;
-Boolean bPaused = true, bSetStepMode = false, bResize = false,
-        bDebug = false, bDrawGrid = false, bDrawCircles = false, bShowInstructions = false;
+Boolean bPaused = false, bSetStepMode = false, bResize = false,
+        bDebug = false, bDrawGrid = false, bDrawCircles = false, 
+        bShowInstructions = false, bUniformDist = true;
 Graph g;
 WatorSim watorWorld;
 
@@ -29,6 +30,7 @@ void mousePressed() {
     }
   }
 }
+
 void updateCellDimm() {
   cellDimmMax = szDimm/2;
   if(cellDimm > cellDimmMax) {
@@ -73,6 +75,7 @@ void drawInstructions() {
         writeLine("number of sharks: "+ watorWorld.sharks.size(),L++);
         writeLine("(press g) toggle grid (large cell dimm debug tool)", L++);
         writeLine("(press spacebar) Game is: " + (bPaused ? "paused" : "running") , L++);
+        writeLine("(press e) type of uniform dist: "+(bUniformDist ? "seperate" : "combined"),L++);
      } else {
          writeLine("(press q) to show instructions.",L++);
      }
@@ -106,6 +109,10 @@ void keyPressed() {
        break;
        case 'g':
         bDrawGrid = !bDrawGrid;
+        break;
+       case 'e':
+        bUniformDist = !bUniformDist;
+        updateCellDimm();
         break;
        case 'q':
         bShowInstructions = !bShowInstructions;
